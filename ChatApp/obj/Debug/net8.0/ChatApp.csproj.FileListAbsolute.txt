@@ -23,3 +23,4 @@ C:\Users\teymur.rahimli\Desktop\Projects\ChatApplication\ChatApp\obj\Debug\net8.
 C:\Users\teymur.rahimli\Desktop\Projects\ChatApplication\ChatApp\obj\Debug\net8.0\ChatApp.pdb
 C:\Users\teymur.rahimli\Desktop\Projects\ChatApplication\ChatApp\obj\Debug\net8.0\ChatApp.genruntimeconfig.cache
 C:\Users\teymur.rahimli\Desktop\Projects\ChatApplication\ChatApp\obj\Debug\net8.0\ref\ChatApp.dll
+C:\Users\teymur.rahimli\Desktop\Projects\ChatApplication\ChatApp\obj\Debug\net8.0\ChatApp.sourcelink.json

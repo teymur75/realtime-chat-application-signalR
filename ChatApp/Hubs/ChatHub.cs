@@ -18,5 +18,19 @@ namespace ChatApp.Hubs
             await Clients.Others.SendAsync("clientJoined", nickName);
             await Clients.All.SendAsync("allclients",Data.Clients);
         }
+
+        public async Task SendMessageAsync(string message,string username)
+        {
+            if (username=="1")
+            {
+                await Clients.All.SendAsync("receiveMessage", message);
+            }
+            else
+            {
+                var existUser = Data.Clients.FirstOrDefault(c => c.Nickname == username);
+                await Clients.Client(existUser.ConnectionId).SendAsync("receiveMessage", message,existUser);
+            }
+           
+        }
     }
 }

@@ -60,78 +60,51 @@
             
           </div>
 
+          
           <div class="col-md-8">
+
             <div class="settings-tray">
                 <div class="friend-drawer no-gutters friend-drawer--grey">
                 <img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/robocop.jpg" alt="">
                 <div class="text">
-                  <h6>Robo Cop</h6>
+                  <h6 id="selectedusername"></h6>
                 </div>
               </div>
             </div>
-            <div class="chat-panel">
 
-              <div class="row no-gutters">
+            <div id="chat-panel" class="chat-panel">
+              
+              <!--GuestMessage-->
+              <!-- <div class="row no-gutters">
                 <div class="col-md-3">
                   <div class="chat-bubble chat-bubble--left">
                     Hello dude!
                   </div>
                 </div>
-              </div>
-              <div class="row no-gutters">
-                <div class="col-md-3 offset-md-9">
-                  <div class="chat-bubble chat-bubble--right">
-                    Hello dude!
-                  </div>
-                </div>
-              </div>
-              <div class="row no-gutters">
-                <div class="col-md-3 offset-md-9">
-                  <div class="chat-bubble chat-bubble--right">
-                    Hello dude!
-                  </div>
-                </div>
-              </div>
-              <div class="row no-gutters">
-                <div class="col-md-3">
-                  <div class="chat-bubble chat-bubble--left">
-                    Hello dude!
-                  </div>
-                </div>
-              </div>
-              <div class="row no-gutters">
-                <div class="col-md-3">
-                  <div class="chat-bubble chat-bubble--left">
-                    Hello dude!
-                  </div>
-                </div>
-              </div>
-              <div class="row no-gutters">
-                <div class="col-md-3">
-                  <div class="chat-bubble chat-bubble--left">
-                    Hello dude!
-                  </div>
-                </div>
-              </div>
-              <div class="row no-gutters">
-                <div class="col-md-3 offset-md-9">
-                  <div class="chat-bubble chat-bubble--right">
-                    Hello dude!
-                  </div>
-                </div>
-              </div>
+              </div> -->
 
+              <!--OwnMessage-->
+              <!-- <div class="row no-gutters">
+                <div class="col-md-3 offset-md-9">
+                  <div class="chat-bubble chat-bubble--right">
+                    Hello dude!
+                  </div>
+                </div>
+              </div> -->
+              
+
+              <!--Send-->
               <div class="row">
                 <div class="col-12">
                   <div class="chat-box-tray">
                     <i class="material-icons">sentiment_very_satisfied</i>
-                    <input type="text" placeholder="Type your message here...">
+                    <input id="sendmsg" type="text" placeholder="Type your message here...">
                     <i class="material-icons">mic</i>
-                    <i class="material-icons">send</i>
+                    <button id="sendbtn" class="fa-solid fa-send">Send</button>
                   </div>
                 </div>
               </div>
-
+              <!--S End-->
             </div>
           </div>
 
@@ -172,7 +145,7 @@
             <div class="friend-drawer friend-drawer--onhover">
                 <img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/robocop.jpg" alt="">
                 <div class="text">
-                <h6>${client.nickname}</h6>
+                <h6 id="h6">${client.nickname}</h6>
                 </div>
                 <span class="time text-muted small">13:21</span>
             </div>
@@ -186,5 +159,36 @@
     } catch (error) {
         console.error(error);
     }
-});
-  </script>
+  });
+
+  connection.on("receiveMessage",(message,exituser)=>{
+    var chatpanel=$('#chat-panel').html();
+    var newmessage=`<div class="row no-gutters">
+                <div class="col-md-3">
+                  <div class="chat-bubble chat-bubble--left">
+                   ${exituser} - ${message}
+                  </div>
+                </div>
+              </div>`;
+
+              chatpanel.html(newmessage);
+  })
+
+  $(document).on('click', '#list .friend-drawer--onhover', function() {
+    var selectedUserName = $(this).find('.text h6').text();
+    $("#selectedusername").text(selectedUserName);
+          
+  });
+
+  $('#sendbtn').click(()=>{
+    
+    let msg=$('#sendmsg').val();
+    var username=$("#selectedusername").html();
+    connection.invoke("SendMessageAsync",msg,username);
+  })
+
+
+
+  
+
+</script>
