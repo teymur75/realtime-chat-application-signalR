@@ -74,6 +74,9 @@
 
             <div id="chat-panel" class="chat-panel">
               
+              <div id="content" >
+
+              </div>
               <!--GuestMessage-->
               <!-- <div class="row no-gutters">
                 <div class="col-md-3">
@@ -161,34 +164,50 @@
     }
   });
 
-  connection.on("receiveMessage",(message,exituser)=>{
-    var chatpanel=$('#chat-panel').html();
-    var newmessage=`<div class="row no-gutters">
-                <div class="col-md-3">
-                  <div class="chat-bubble chat-bubble--left">
-                   ${exituser} - ${message}
-                  </div>
+  connection.on("receiveMessage", (message, exituser) => {
+    // Mesajın göndericiye mi alıcıya mı ait olduğunu kontrol et
+    var isSender = exituser && exituser.Nickname === $("#selectedusername").text();
+    
+    // Mesajı gösterilecek HTML'i oluştur
+    var messageHtml = `
+        <div class="row no-gutters">
+            <div class="col-md-3 ${isSender ? 'offset-md-9' : ''}">
+                <div class="chat-bubble chat-bubble--${isSender ? 'right' : 'left'}">
+                    ${message}
                 </div>
-              </div>`;
+            </div>
+        </div>
+    `;
 
-              chatpanel.html(newmessage);
-  })
+    $('#content').append(messageHtml);
+});
 
-  $(document).on('click', '#list .friend-drawer--onhover', function() {
+$(document).on('click', '#list .friend-drawer--onhover', function() {
     var selectedUserName = $(this).find('.text h6').text();
     $("#selectedusername").text(selectedUserName);
-          
-  });
+
+    // Mesaj panelini temizle
+    $('#content').empty();
+
+});
 
   $('#sendbtn').click(()=>{
     
     let msg=$('#sendmsg').val();
     var username=$("#selectedusername").html();
+
+    var sentmessageHtml = `
+    <div class="row no-gutters">
+                <div class="col-md-3 offset-md-9">
+                  <div class="chat-bubble chat-bubble--right">
+                    ${msg}
+                  </div>
+                </div>
+              </div>
+    `;
+    $('#content').append(sentmessageHtml);
     connection.invoke("SendMessageAsync",msg,username);
+    $('#sendmsg').val("");
   })
-
-
-
-  
 
 </script>
